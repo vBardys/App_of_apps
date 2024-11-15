@@ -34,7 +34,7 @@ pipeline {
                 }
             }
         }
-        stage {
+        stage ('remove') {
             steps {
                 sh "docker rm -f frontend backend"
             }

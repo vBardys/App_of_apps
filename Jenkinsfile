@@ -1,5 +1,11 @@
-def frontendImage="pandaacademy/frontend"
-def backendImage="pandaacademy/backend"
+def frontendImage="bardys/frontend"
+def backendImage="bardys/backend"
+
+parameters {
+    string(name: 'backendDockerTag', defaultValue: 'latest', description: 'Backend docker image tag')
+    string(name: 'frontendDockerTag', defaultValue: 'latest', description: 'Frontend docker image tag')
+}
+
 
 pipeline {
     agent {
@@ -19,6 +25,13 @@ pipeline {
         stage('Get Code') {
             steps {
                 checkout scm // Get some code from a GitHub repository
+            }
+        }
+        stage('Adjust version') {
+            steps {
+                script {
+                    currentBuild.description = "Backend: ${backendDockerTag}, Frontend: ${frontendDockerTag}"
+                }
             }
         }
 }}

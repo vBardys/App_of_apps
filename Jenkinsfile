@@ -21,6 +21,4 @@ pipeline {
                 checkout scm // Get some code from a GitHub repository
             }
         }
-
- 
-}
+}}

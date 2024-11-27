@@ -62,7 +62,7 @@ pipeline {
         stage('Run terraform') {
             steps {
                 dir('Terraform') {
-                    git branch 'main', url: 'https://github.com/Panda-Academy-Core-2-0/Terraform'
+                    git branch: 'main', url: 'https://github.com/Panda-Academy-Core-2-0/Terraform'
                     withAWS(credentials:'AWS', region: 'us-east-1') {
                         sh 'terraform init -backend-config=bucket=bd-panda-devops-core-19'
                         sh 'terraform apply -auto-approve -var bucket_name=bd-panda-devops-core-19'

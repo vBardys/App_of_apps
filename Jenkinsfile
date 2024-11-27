@@ -11,6 +11,9 @@ pipeline {
     agent {
         label 'agent'
     }
+    tools {
+        terraform 'Terraform'
+    }
 
     environment {
         PIP_BREAK_SYSTEM_PACKAGES = 1
@@ -54,6 +57,17 @@ pipeline {
             steps {
                 sh "pip3 install -r test/selenium/requirements.txt"
                 sh "python3 -m pytest test/selenium/frontendTest.py"
+            }
+        }
+        stage('Run terraform') {
+            steps {
+                dir('Terraform') {
+                    git branch 'main', url 'https://github.com/Panda-Academy-Core-2-0/Terraform'
+                    withAWS(credentials:'AWS', region: 'us-east-1') {
+                        sh 'terraform init -backend-config=bucket=bd-panda-devops-core-19'
+                        sh 'terraform apply -auto-approve -var bucket_name=bd-panda-devops-core-19'
+                    }
+                }
             }
         }
 
